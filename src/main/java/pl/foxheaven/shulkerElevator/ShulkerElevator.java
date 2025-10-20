@@ -4,14 +4,23 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public final class ShulkerElevator extends JavaPlugin {
 
+    private ElevatorRecipe recipeManager;
+
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        getLogger().info("ShulkerElevator enabled");
 
+        saveDefaultConfig();
+
+        recipeManager = new ElevatorRecipe(this);
+        recipeManager.registerRecipe();
+
+        getServer().getPluginManager().registerEvents(new ElevatorListener(this), this);
+
+        getLogger().info("ShulkerElevator fully loaded");
     }
 
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
+    public ElevatorRecipe getRecipeManager() {
+        return recipeManager;
     }
 }

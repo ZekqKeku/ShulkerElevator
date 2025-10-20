@@ -1,0 +1,29 @@
+# Type of block used as elevator
+elevator-block: WHITE_SHULKER_BOX
+
+# Maximum distance for searching next elevator
+max-distance: 32
+
+# Automatically set elevator facing up when placed
+auto-up: true
+
+# Item display name (supports & color codes)
+block-name: "&6&lElevator"
+
+# Item lore (supports & color codes)
+block-lore:
+  - "&7This is elevator"
+  - "&7Max distance: &b32"
+
+# Add glow effect
+glow: true
+
+# Crafting recipe
+recipe:
+  shape:
+    - "WWW"
+    - "WEW"
+    - "WWW"
+  ingredients:
+    W: WHITE_WOOL
+    E: ENDER_PEARL
