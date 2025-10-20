@@ -1,0 +1,4 @@
+name: ShulkerElevator
+version: '0.1.0'
+main: pl.foxheaven.shulkerElevator.ShulkerElevator
+api-version: '1.21'

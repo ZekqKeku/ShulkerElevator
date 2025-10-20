@@ -1,0 +1,72 @@
+# =======================================
+# IntelliJ IDEA / JetBrains
+# =======================================
+.idea/
+*.iml
+out/
+*.ipr
+*.iws
+
+# =======================================
+# Build system (Maven / Gradle)
+# =======================================
+target/
+build/
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+.gradle/
+.gradle-build/
+**/logs/
+dependency-reduced-pom.xml
+
+# =======================================
+# Java
+# =======================================
+*.class
+*.log
+*.jar
+*.war
+*.ear
+
+# =======================================
+# OS files
+# =======================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =======================================
+# Environment / system files
+# =======================================
+.env
+*.tmp
+*.bak
+*.swp
+
+# =======================================
+# Minecraft plugin specific
+# =======================================
+# Lokalne serwery testowe, np. Spigot/Paper
+run/
+server/
+testserver/
+plugins-old/
+plugins_backup/
+
+# =======================================
+# Lombok, annotation processors, etc.
+# =======================================
+*.factorypath
+
+# =======================================
+# Logs / temporary configs
+# =======================================
+logs/
+debug.log
+hs_err_pid*.log
+replay_pid*.log
+
+# =======================================
+# VSCode
+# =======================================
+.vscode/
