@@ -12,7 +12,6 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.ChatColor;
 
-import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,43 +27,51 @@ public class ElevatorRecipe {
     public void registerRecipe() {
         FileConfiguration config = plugin.getConfig();
 
-        // Elevator block type
         Material resultMaterial = Material.matchMaterial(config.getString("elevator-block", "PURPLE_SHULKER_BOX"));
         if (resultMaterial == null) resultMaterial = Material.PURPLE_SHULKER_BOX;
 
-        // Prepare item
         ItemStack elevator = new ItemStack(resultMaterial);
         ItemMeta meta = elevator.getItemMeta();
 
-        // Display name with colors
         String displayName = config.getString("block-name", "&6&lElevator");
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName));
 
-        // Lore with colors
         List<String> lore = config.getStringList("block-lore").stream()
                 .map(line -> ChatColor.translateAlternateColorCodes('&', line))
                 .collect(Collectors.toList());
         if (!lore.isEmpty()) meta.setLore(lore);
 
-        // Glow: try Paper/Spigot newer API first (setEnchantmentGlintOverride), fallback to hidden enchant
         boolean glowRequested = config.getBoolean("glow", false);
+
+        plugin.getLogger().info("Checking glow setting... Value read from config: " + glowRequested);
+
         if (glowRequested) {
-            boolean applied = trySetGlintOverride(meta, true);
-            if (!applied) {
-                // fallback: add harmless enchant and hide it
-                meta.addEnchant(Enchantment.EFFICIENCY, 1, true);
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            try {
+                meta.setEnchantmentGlintOverride(Boolean.TRUE);
+                plugin.getLogger().info("Applied glow using setEnchantmentGlintOverride().");
+            } catch (NoSuchMethodError e) {
+                plugin.getLogger().info("setEnchantmentGlintOverride() not found. Using fallback enchant method.");
+                try {
+                    meta.addEnchant(Enchantment.UNBREAKING, 1, true);
+                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                    plugin.getLogger().info("Applied glow using fallback enchant method (DURABILITY).");
+                } catch (Exception e2) {
+                    plugin.getLogger().warning("Fallback glow method also failed: " + e2.getMessage());
+                }
             }
         }
-
         elevator.setItemMeta(meta);
 
-        // Create shaped recipe
         NamespacedKey key = new NamespacedKey(plugin, "shulker_elevator");
+
+        if (Bukkit.getRecipe(key) != null) {
+            Bukkit.removeRecipe(key);
+            plugin.getLogger().info("Removed old elevator recipe.");
+        }
+
         ShapedRecipe recipe = new ShapedRecipe(key, elevator);
         recipe.shape(config.getStringList("recipe.shape").toArray(new String[0]));
 
-        // Ingredients
         Map<String, Object> ingredients = config.getConfigurationSection("recipe.ingredients").getValues(false);
         for (Map.Entry<String, Object> entry : ingredients.entrySet()) {
             char symbol = entry.getKey().charAt(0);
@@ -73,28 +80,7 @@ public class ElevatorRecipe {
         }
 
         Bukkit.addRecipe(recipe);
-        plugin.getLogger().info("Elevator recipe registered from config.yml (glow=" + glowRequested + ")");
-    }
 
-    /**
-     * Tries to call ItemMeta#setEnchantmentGlintOverride(Boolean) via reflection.
-     * Returns true if call succeeded and glint override set, false otherwise.
-     *
-     * This avoids compile-time dependency issues when building against APIs
-     * that don't have the method.
-     */
-    private boolean trySetGlintOverride(ItemMeta meta, boolean value) {
-        try {
-            Method m = meta.getClass().getMethod("setEnchantmentGlintOverride", Boolean.class);
-            if (m != null) {
-                m.invoke(meta, Boolean.valueOf(value));
-                return true;
-            }
-        } catch (NoSuchMethodException ignored) {
-            // method not present on this server API
-        } catch (Throwable t) {
-            plugin.getLogger().warning("Failed to set enchantment glint override via reflection: " + t.getMessage());
-        }
-        return false;
+        plugin.getLogger().info("Elevator recipe registration finished.");
     }
 }
