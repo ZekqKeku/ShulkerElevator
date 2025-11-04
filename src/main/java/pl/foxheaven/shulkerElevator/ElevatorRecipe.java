@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 public class ElevatorRecipe {
 
     private final JavaPlugin plugin;
+    private final String KEY_NAME = "shulker_elevator";
 
     public ElevatorRecipe(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -33,6 +34,11 @@ public class ElevatorRecipe {
         ItemStack elevator = new ItemStack(resultMaterial);
         ItemMeta meta = elevator.getItemMeta();
 
+        if (meta == null) {
+            plugin.getLogger().severe("Nie można pobrać ItemMeta dla materiału: " + resultMaterial);
+            return;
+        }
+
         String displayName = config.getString("block-name", "&6&lElevator");
         meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName));
 
@@ -41,35 +47,29 @@ public class ElevatorRecipe {
                 .collect(Collectors.toList());
         if (!lore.isEmpty()) meta.setLore(lore);
 
-        boolean glowRequested = config.getBoolean("glow", false);
-
+        boolean glowRequested = config.getBoolean("glow", true);
         plugin.getLogger().info("Checking glow setting... Value read from config: " + glowRequested);
 
         if (glowRequested) {
             try {
-                meta.setEnchantmentGlintOverride(Boolean.TRUE);
-                plugin.getLogger().info("Applied glow using setEnchantmentGlintOverride().");
-            } catch (NoSuchMethodError e) {
-                plugin.getLogger().info("setEnchantmentGlintOverride() not found. Using fallback enchant method.");
-                try {
-                    meta.addEnchant(Enchantment.UNBREAKING, 1, true);
-                    meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                    plugin.getLogger().info("Applied glow using fallback enchant method (DURABILITY).");
-                } catch (Exception e2) {
-                    plugin.getLogger().warning("Fallback glow method also failed: " + e2.getMessage());
-                }
+                meta.addEnchant(Enchantment.UNBREAKING, 1, true);
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                plugin.getLogger().info("Successfully applied glow (enchant + hide flags).");
+            } catch (Exception e) {
+                plugin.getLogger().warning("Failed to apply  glow method: " + e.getMessage());
             }
         }
+
         elevator.setItemMeta(meta);
 
-        NamespacedKey key = new NamespacedKey(plugin, "shulker_elevator");
+        NamespacedKey correctKey = new NamespacedKey(plugin, KEY_NAME);
 
-        if (Bukkit.getRecipe(key) != null) {
-            Bukkit.removeRecipe(key);
-            plugin.getLogger().info("Removed old elevator recipe.");
+        if (Bukkit.getRecipe(correctKey) != null) {
+            Bukkit.removeRecipe(correctKey);
+            plugin.getLogger().info("Removed existing recipe with correct key (overwriting): " + correctKey);
         }
 
-        ShapedRecipe recipe = new ShapedRecipe(key, elevator);
+        ShapedRecipe recipe = new ShapedRecipe(correctKey, elevator);
         recipe.shape(config.getStringList("recipe.shape").toArray(new String[0]));
 
         Map<String, Object> ingredients = config.getConfigurationSection("recipe.ingredients").getValues(false);
@@ -81,6 +81,6 @@ public class ElevatorRecipe {
 
         Bukkit.addRecipe(recipe);
 
-        plugin.getLogger().info("Elevator recipe registration finished.");
+        plugin.getLogger().info("Elevator recipe registration finished with FINAL key: " + correctKey);
     }
 }

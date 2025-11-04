@@ -6,7 +6,7 @@
 
     <groupId>pl.foxheaven</groupId>
     <artifactId>ShulkerElevator</artifactId>
-    <version>0.1.16</version>
+    <version>0.1.20</version>
     <packaging>jar</packaging>
 
     <name>ShulkerElevator</name>
