@@ -1,0 +1,38 @@
+# Material type for the elevator (e.g., #WOOLS, #GLASS, #CONCRETE, #TERRACOTTA or a specific Material name)
+material: "#GLASS"
+
+# Maximum distance to search for the next elevator block
+max-distance: 8
+
+# Whether the elevator item should have an enchantment glint
+glow: true
+
+# Whether the elevator can teleport players through solid blocks
+pass-through: true
+
+# Automatically set the block facing UP when placed
+auto-up: true
+
+# Permission required to use this elevator type
+permission_use: "glass.use"
+
+# Permission required to craft this elevator type
+permission_craft: "glass.craft"
+
+# Display name of the elevator item
+display-name: "&b&lGlass Elevator"
+
+# Lore of the elevator item
+lore:
+  - "&7Short range transparent elevator"
+  - "&7Max distance: &b8"
+
+# Crafting recipe
+recipe:
+  shape:
+    - "GGG"
+    - "GEG"
+    - "GGG"
+  ingredients:
+    G: "#GLASS"
+    E: ENDER_PEARL

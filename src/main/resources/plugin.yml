@@ -1,5 +1,11 @@
-name: ShulkerElevator
-version: '0.1.20'
-main: pl.foxheaven.shulkerElevator.ShulkerElevator
+name: ${project.name}
+version: ${manifest.version}
+main: pl.zekq.shulkerElevator.ShulkerElevator
+author: zekq
 api-version: '1.21'
 folia-supported: true
+
+commands:
+  elevator:
+    description: Main command for ShulkerElevator
+    usage: /elevator debug

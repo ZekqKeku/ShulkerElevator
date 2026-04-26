@@ -1,0 +1,23 @@
+# Handle line endings automatically for files detected as text
+# and leave binary files untouched.
+* text=auto
+
+# Standard text files
+*.java text diff=java
+*.xml text
+*.yml text
+*.yaml text
+*.json text
+*.md text
+*.properties text
+
+# Binary files
+*.jar binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+
+# Ensure shell scripts always use LF (if any are added)
+*.sh text eol=lf

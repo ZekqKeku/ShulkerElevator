@@ -1,0 +1,17 @@
+# ShulkerElevator Messages Configuration
+prefix: "&6&lShulkerElevator &8» &7"
+
+no-permission: "&cYou don't have permission to do this!"
+command-not-found: "&cUnknown command. Use &e/elevator &cfor help."
+plugin-reloaded: "&aPlugin has been successfully reloaded!"
+no-elevator-found: "&cNo elevator %direction% you!"
+teleported: "&aTeleported %direction%!"
+obstruction-detected: "&cObstruction detected! Cannot teleport through blocks."
+
+# List command translations
+list-header: "&6Loaded Elevator Profiles:"
+list-format-success: " &a✔ &f%id% &7(Mat: %mat%, Dist: %dist%)"
+list-format-error: " &c✘ &f%id%"
+
+# Report command
+report-note: "Please report any bugs or suggest new features here:"

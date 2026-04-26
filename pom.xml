@@ -4,21 +4,60 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>pl.foxheaven</groupId>
+    <groupId>pl.zekq</groupId>
     <artifactId>ShulkerElevator</artifactId>
-    <version>0.1.20</version>
+    <version>0.0.0-DYNAMIC</version>
     <packaging>jar</packaging>
 
     <name>ShulkerElevator</name>
 
     <properties>
         <java.version>21</java.version>
+        <api-version-placeholder>1.21</api-version-placeholder>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <build>
         <defaultGoal>clean package</defaultGoal>
+        <finalName>${project.artifactId}-${manifest.version}</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <scripts>
+                                <script>
+                                    import groovy.json.JsonSlurper
+                                    def manifestFile = new File('manifest.json')
+                                    if (manifestFile.exists()) {
+                                        def manifest = new JsonSlurper().parse(manifestFile)
+                                        project.properties['manifest.version'] = manifest.version
+                                        println "Loaded version ${manifest.version} from manifest.json"
+                                    } else {
+                                        project.properties['manifest.version'] = 'unknown'
+                                        println "WARNING: manifest.json not found!"
+                                    }
+                                </script>
+                            </scripts>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.groovy</groupId>
+                        <artifactId>groovy-all</artifactId>
+                        <version>4.0.21</version>
+                        <type>pom</type>
+                    </dependency>
+                </dependencies>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

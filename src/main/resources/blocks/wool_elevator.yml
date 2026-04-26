@@ -1,0 +1,38 @@
+# Material type for the elevator (e.g., #WOOLS, #GLASS, #CONCRETE, #TERRACOTTA or a specific Material name)
+material: "#WOOLS"
+
+# Maximum distance to search for the next elevator block
+max-distance: 16
+
+# Whether the elevator item should have an enchantment glint
+glow: true
+
+# Whether the elevator can teleport players through solid blocks
+pass-through: true
+
+# Automatically set the block facing UP when placed (useful for directional blocks like Shulker Boxes)
+auto-up: true
+
+# Permission required to use this elevator type (appends 'shulkerelevator.' prefix)
+permission_use: "wool.use"
+
+# Permission required to craft this elevator type (appends 'shulkerelevator.' prefix)
+permission_craft: "wool.craft"
+
+# Display name of the elevator item
+display-name: "&f&lWoolen Elevator"
+
+# Lore of the elevator item
+lore:
+  - "&7Standard range elevator"
+  - "&7Max distance: &b16"
+
+# Crafting recipe
+recipe:
+  shape:
+    - "WWW"
+    - "WEW"
+    - "WWW"
+  ingredients:
+    W: "#WOOLS"
+    E: ENDER_PEARL

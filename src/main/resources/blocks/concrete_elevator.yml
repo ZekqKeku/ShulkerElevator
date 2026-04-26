@@ -1,0 +1,38 @@
+# Material type for the elevator (e.g., #WOOLS, #GLASS, #CONCRETE, #TERRACOTTA or a specific Material name)
+material: "#CONCRETE"
+
+# Maximum distance to search for the next elevator block
+max-distance: 32
+
+# Whether the elevator item should have an enchantment glint
+glow: true
+
+# Whether the elevator can teleport players through solid blocks
+pass-through: false
+
+# Automatically set the block facing UP when placed
+auto-up: true
+
+# Permission required to use this elevator type
+permission_use: "concrete.use"
+
+# Permission required to craft this elevator type
+permission_craft: "concrete.craft"
+
+# Display name of the elevator item
+display-name: "&8&lConcrete Elevator"
+
+# Lore of the elevator item
+lore:
+  - "&7Long range heavy elevator"
+  - "&7Max distance: &b32"
+
+# Crafting recipe
+recipe:
+  shape:
+    - "CCC"
+    - "CEC"
+    - "CCC"
+  ingredients:
+    C: "#CONCRETE"
+    E: ENDER_PEARL
