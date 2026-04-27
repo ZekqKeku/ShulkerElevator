@@ -1,5 +1,7 @@
 # ShulkerElevator
 
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
+
 A modern, highly customizable elevator plugin for Minecraft servers. Create elevators out of various blocks like Wool, Glass, Concrete, or Terracotta with dynamic color support and advanced configuration options.
 
 ## Features
@@ -112,3 +114,21 @@ Translate every player-facing string and customize the plugin prefix. Supports c
 ## Bug Reports & Feature Requests
 Please report any issues or suggest improvements on our GitHub repository:
 [https://github.com/ZekqKeku/ShulkerElevator/issues](https://github.com/ZekqKeku/ShulkerElevator/issues)
+
+---
+
+## License
+
+[![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc/4.0/)
+
+ShulkerElevator is the intellectual property of zekq.
+
+Under the **CC BY-NC 4.0** license, you are free to:
+*   **Share** — copy and redistribute the material in any medium or format
+*   **Adapt** — remix, transform, and build upon the material
+
+Under the following terms:
+*   **Attribution** — You must give appropriate credit (mention **zekq** as the original author), provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+*   **NonCommercial** — You may not use the material for commercial purposes. Only the original author (**zekq**) reserves the right to monetize this work.
+
+For more details, see the [LICENSE](LICENSE) file
