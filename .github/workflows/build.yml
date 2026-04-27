@@ -1,0 +1,67 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  workflow_dispatch:
+    inputs:
+      create_release:
+        description: 'Push artifact as a release'
+        required: true
+        type: boolean
+        default: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Read manifest.json
+        id: manifest
+        run: |
+          NAME=$(jq -r .name manifest.json)
+          VERSION=$(jq -r .version manifest.json)
+          STATUS=$(jq -r .status manifest.json)
+          echo "name=$NAME" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "status=$STATUS" >> $GITHUB_OUTPUT
+          echo "filename=${NAME}-${STATUS}-${VERSION}.jar" >> $GITHUB_OUTPUT
+
+      - name: Build with Maven
+        run: mvn clean package -B
+
+      - name: Rename artifact
+        run: |
+          ORIGINAL_JAR="target/${{ steps.manifest.outputs.name }}-${{ steps.manifest.outputs.version }}.jar"
+          NEW_JAR="target/${{ steps.manifest.outputs.filename }}"
+          mv "$ORIGINAL_JAR" "$NEW_JAR"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.manifest.outputs.filename }}
+          path: target/${{ steps.manifest.outputs.filename }}
+
+      - name: Create Release
+        if: github.event_name == 'workflow_dispatch' && inputs.create_release == true
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.manifest.outputs.status }}
+          name: Release ${{ steps.manifest.outputs.status }} - ${{ steps.manifest.outputs.version }}
+          files: target/${{ steps.manifest.outputs.filename }}
+          draft: false
+          prerelease: true
